@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data Science Project</title>
+  <link rel="stylesheet" href="{% static 'finalexampredict/css/style.css'%}"/>
+  <!-- <script defer src="{% static 'finalexampredict/js/navbar.js' %}"></script> -->
+
+</head>
+<body>
+    <!-- <div id="navbar-placeholder"></div> -->
+    {% include "finalexampredict/navbar.html" %}
+    <header>
+    <div class="container">
+      <h1>candi prambanan</h1>
+      <p class="subtitle">bandung bandung roso roso roso</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <h2>About the Project</h2>
+      <p>
+        This data science project explores real-world datasets to uncover actionable insights.
+        By applying machine learning and statistical analysis, we aim to solve critical challenges in
+        various industries including healthcare, finance, and marketing.
+      </p>
+    </section>
+
+    <section class="use-cases">
+      <h2>Use Cases</h2>
+      <ul>
+        <li><strong>Healthcare:</strong> Predict patient readmissions using clinical records.</li>
+        <li><strong>Finance:</strong> Detect fraudulent transactions in real-time.</li>
+        <li><strong>Marketing:</strong> Customer segmentation for personalized campaigns.</li>
+        <li><strong>Retail:</strong> Demand forecasting for inventory optimization.</li>
+      </ul>
+    </section>
+
+    <section class="target-users">
+      <h2>Target Users</h2>
+      <p>
+        This project is designed for data scientists, analysts, and decision-makers who need 
+        practical insights from complex data. Whether you’re a business executive or a research scholar,
+        the models and visualizations are tailored to be accessible and informative.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Data Science Project. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
