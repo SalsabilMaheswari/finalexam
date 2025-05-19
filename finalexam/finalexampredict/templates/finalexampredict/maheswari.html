@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'finalexampredict/css/style.css'%}"/>
+    <title>Document</title>
+</head>
+<body>
+     <!-- <div id="navbar-placeholder"></div> -->
+    {% include "finalexampredict/navbar.html" %}
+    <header>
+    <div class="container">
+      <h1>candi prambanan</h1>
+      <p class="subtitle">bandung bandung roso roso roso</p>
+    </div>
+  </header>
+  <table class="table table-striped table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Model Name</th>
+                        <th>File</th>
+                        <th>Training Data</th>
+                        <th>Training Date</th>
+                        <th>Summary</th>
+                    </tr>
+                </thead>
+                {#
+                <tbody>
+                    {% for info in model_infos %}
+                    <tr>
+                        <td>{{ info.model_name }}</td>
+                        <td>{{ info.model_file }}</td>
+                        <td>{{ info.training_data }}</td>
+                        <td>{{ info.training_date|date:"Y-m-d H:i" }}</td>
+                        <td><div style="overflow-x: auto; max-width: 100%;"><pre class="summary">{{ info.model_summary }}</pre></div></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">No model info found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                #}
+            </table>
+
+</body>
+</html>

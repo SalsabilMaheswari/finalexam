@@ -8,6 +8,5 @@ def home(request):
 def about(request):
     return render(request,"finalexampredict/about.html")
 
-def about(request):
-    return render(request,"finalexampredict/maheswari.html")
-
+def maheswari(request):  
+    return render(request, "finalexampredict/maheswari.html")
