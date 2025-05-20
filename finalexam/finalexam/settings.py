@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'finalexam.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'examcase_01',
+        'NAME': 'finex',
         'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'useme',
         'HOST': 'localhost',
         'PORT': '5432',
     }
