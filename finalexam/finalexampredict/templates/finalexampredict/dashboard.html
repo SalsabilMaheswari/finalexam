@@ -1,18 +1,65 @@
 {% load static %}
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Student Performance Prediction</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <title>Student Performance Prediction</title>
+  <link rel="stylesheet" href="{% static 'finalexampredict/css/style.css' %}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h2>Student Performance Prediction</h2>
-    <div id="statusBox">Waiting for predictions...</div>
-    <canvas id="predictionChart" width="600" height="300"></canvas>
 
-    <!-- Load external JS -->
-    <script src="{% static 'finalexampredict\js\predict.js' %}"></script>
+  <!-- Navbar -->
+  {% include "finalexampredict/navbar.html" %}
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="title">
+        <h1>Student Performance Prediction</h1>
+    </div>
+
+    <!-- Prediction Form -->
+    <form id="predictionForm">
+      {% csrf_token %}
+      <div class="form-field">
+        <label for="id_avg_grade">Average Grade:</label>
+        {{ form.avg_grade }}
+      </div>
+      <div class="form-field">
+        <label for="id_avg_score">Average Score:</label>
+        {{ form.avg_score }}
+      </div>
+      <div class="form-field">
+        <label for="id_avg_attendance">Average Attendance (%):</label>
+        {{ form.avg_attendance }}
+      </div>
+      <div class="form-field">
+        <label for="id_total_assessment">Total Assessments:</label>
+        {{ form.total_assessment }}
+      </div>
+      <div class="form-field">
+        <label for="id_gpa">GPA:</label>
+        {{ form.gpa }}
+      </div>
+
+      <button type="submit">Predict Performance</button>
+    </form>
+
+    <!-- Status Box -->
+    <div id="statusBox">Waiting for predictions...</div>
+
+    <!-- Chart Area -->
+    <canvas id="predictionChart" width="600" height="300"></canvas>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2025 MyProject. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="{% static 'finalexampredict/js/prediction_form.js' %}"></script>
 </body>
 </html>

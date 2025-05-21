@@ -25,19 +25,19 @@ class Command(BaseCommand):
                 assessments = Assessment.objects.filter(enrollment=enrollment)
                 attendance = Attendance.objects.filter(enrollment=enrollment).first()
 
-                total_score = sum([a.score for a in assessments])
-                count_score = assessments.count()
+                total_score = sum([a.score for a in assessments]) #Diambil semua score assessment di tiap enrollment
+                count_score = assessments.count() # jumlah assessment per enrollment
                 avg_score = total_score / count_score if count_score > 0 else 0
                 attendance_pct = attendance.attendance_percentage if attendance else 0
 
                 total_grade += enrollment.grade
-                total_avg_score += avg_score
+                total_avg_score += avg_score 
                 total_attendance += attendance_pct
                 total_assessment += count_score
 
             # Rata-rata per student
-            avg_grade = total_grade / enrollment_count #rata-rata semua grade mahasiswa dari semua mata kuliah yang dia ambil di tabel enrollment
-            avg_avg_score = total_avg_score / enrollment_count #rata-rata nilai assessment per enrollment, yang kemudian dirata-ratakan lagi per student 
+            avg_grade = total_grade / enrollment_count #enrollment_count = jumlah matkul yang diambil mahasiswa itu #rata-rata semua grade mahasiswa dari semua mata kuliah yang dia ambil di tabel enrollment
+            avg_avg_score = total_avg_score / enrollment_count #rata-rata nilai assessment per enrollment, lalu dirata-ratakan lagi per student 
             avg_attendance = total_attendance / enrollment_count
             total_assessment_count = total_assessment
 
