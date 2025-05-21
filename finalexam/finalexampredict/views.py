@@ -10,3 +10,6 @@ def about(request):
 
 def maheswari(request):  
     return render(request, "finalexampredict/maheswari.html")
+
+def member3(request):
+    return render(request,"finalexampredict/member3.html")
