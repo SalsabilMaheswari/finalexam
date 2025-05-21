@@ -13,32 +13,35 @@ class Command(BaseCommand):
         # 1. Load CSV
         df = pd.read_csv('student_gpa_per_student.csv')
 
-        # 2. Define features & label
+        # 2. Create target label from GPA (binary classification)
+        df['performance_label'] = df['gpa'].apply(lambda gpa: 1 if gpa > 3.0 else 0)
+
+        # 3. Define features & label
         features = ['avg_grade', 'avg_score', 'avg_attendance', 'total_assessment', 'gpa']
         X = df[features]
         y = df['performance_label']
 
-        # 3. Train-test split
+        # 4. Train-test split
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, random_state=42 #20% of the total dataset is used for test data (test size)
         ) 
 
-        # 4. Train model
+        # 5. Train model
         model = RandomForestClassifier()
         model.fit(X_train, y_train)
 
-        # 5. Predict & evaluate
+        # 6. Predict & evaluate
         predictions = model.predict(X_test)
         report = classification_report(y_test, predictions)
 
         self.stdout.write(self.style.SUCCESS("Classification Report:\n" + report))
 
-        #6. save model to file
+        # 7. save model to file
         model_filename = 'final_studentgpa_model.pkl'
         joblib.dump(model, model_filename)
         self.stdout.write(self.style.SUCCESS(f'model saved as {model_filename}'))
 
-        # 7. Save model info to DB
+        # 8. Save model info to DB
         model_info = ModelInfo.objects.create(
             model_name='Random Forest',
             model_file=model_filename,

@@ -6,7 +6,7 @@ from django.utils.timezone import now
 # Register your models here.
 @admin.register(ModelInfo)
 class ModelInfoAdmin(admin.ModelAdmin):
-    list_display = ('model_name', 'training_data', 'model_file', 'created_at', 'retrain_button')
+    list_display = ('model_name', 'created_at',  'training_data', 'model_file', 'short_summary', 'retrain_button')
     search_fields = ('model_name', 'training_data')
 
     def short_summary(self, obj):

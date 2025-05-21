@@ -56,7 +56,6 @@ class Command(BaseCommand):
                 'avg_attendance': round(avg_attendance, 2),
                 'total_assessment': total_assessment_count,
                 'gpa': round(gpa, 2),
-                'performance_label': performance_label
             })
 
         df = pd.DataFrame(data)

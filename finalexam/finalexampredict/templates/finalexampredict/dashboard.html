@@ -1,0 +1,18 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Student Performance Prediction</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Student Performance Prediction</h2>
+    <div id="statusBox">Waiting for predictions...</div>
+    <canvas id="predictionChart" width="600" height="300"></canvas>
+
+    <!-- Load external JS -->
+    <script src="{% static 'finalexampredict\js\predict.js' %}"></script>
+</body>
+</html>

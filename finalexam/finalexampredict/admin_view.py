@@ -5,8 +5,8 @@ from django.utils.timezone import now
 from .models import ModelInfo
 
 @staff_member_required
-def retrain_model_view(requst, model_id):
-    model = get_object_or_404
+def retrain_model_view(request, model_id):
+    model = get_object_or_404(ModelInfo, id=model_id)
 
     try:
         new_model_path = f"models/{model.model_name.lower()}_retrained.pkl"
@@ -18,7 +18,7 @@ def retrain_model_view(requst, model_id):
         model.training_date = now()
         model.save()
 
-        messages.success(requst, "model retrained succesfully")
+        messages.success(request, "model retrained succesfully")
     except Exception as e:
-        messages.error(requst, f"retraining failed: {str(e)}")
+        messages.error(request, f"retraining failed: {str(e)}")
     return redirect('/admin/finalexampredict/modelinfo/')
