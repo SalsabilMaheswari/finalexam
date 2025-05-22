@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Altara - AI Learning Talent Radar</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Lexend:wght@400;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: #050e18;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .background-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://i.pinimg.com/736x/b1/a0/15/b1a01574e6ccfc4818c7e43b4859d557.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.4) blur(2px);
+      z-index: 1;
+    }
+
+    .altara-logo {
+      position: relative;
+      z-index: 2;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 80px;
+      letter-spacing: 5px;
+      color: #ffffff;
+      text-shadow: 0 0 10px #3ca1b8, 0 0 20px #38a7bd;
+    }
+
+    .tagline {
+      position: relative;
+      z-index: 2;
+      font-size: 20px;
+      font-style: italic;
+      margin-top: 10px;
+      color: #d0e9ff;
+    }
+
+    .section {
+      padding: 60px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      max-width: 700px;
+      width: 90%;
+    }
+
+    .card h2 {
+      color: #1c6676;
+      margin-bottom: 15px;
+    }
+
+    .card p, .card li {
+      color: #d8e6f1;
+      line-height: 1.6;
+    }
+
+    .card ul {
+      padding-left: 20px;
+      list-style: square;
+    }
+
+    .cta-button {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .cta-button a button {
+      background: linear-gradient(135deg, #063741, #6ec1e4);
+      border: none;
+      padding: 14px 32px;
+      font-size: 16px;
+      color: #c6d5e7;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(18, 131, 151, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .cta-button a button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+    {% include "finalexampredict/navbar.html" %}
+  <div class="hero">
+    <div class="background-img"></div>
+    <div class="altara-logo">ALTARA</div>
+    <div class="tagline">"Because Every Talent Deserves to Be Seen."</div>
+  </div>
+
+  <div class="section">
+    <div class="card">
+      <h2>About</h2>
+      <p><strong>Altara</strong> 
+     (A Learning Talent Radar) is a tool that supports education by helping to discover students’ strengths, both academic and non-academic.
+      </p>
+
+      
+    </div>
+
+    <div class="card">
+      <h2>What Altara Predicts ?</h2>
+      <ul>
+        <li>Scholarship Eligibility: Eligible / Not Eligible</li>
+        <li>Non-Academic Involvement: Active / Inactive</li>
+        <li>Grade Consistency: Stable / Declining</li>
+        <li>Internship Readiness: Ready / Not Ready</li>
+      </ul>
+    </div>
+
+    <div class="cta-button">
+      <a href="{% url 'altara_predict' %}">
+        <button>Start Predict with Altara</button>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

@@ -17,6 +17,9 @@ def home(request):
 def about(request):
     return render(request,"finalexampredict/about.html")
 
+def member2(request):
+    return render(request, 'finalexampredict/member2.html')
+
 def maheswari(request):  
     model_infos = ModelInfo.objects.all()
     return render(request, 'finalexampredict/maheswari.html', {'model_infos': model_infos})

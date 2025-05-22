@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Altara Prediction Result</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Lexend:wght@300;400;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: #050e18;
+      color: #ffffff;
+      padding: 60px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .result-container {
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      max-width: 700px;
+      width: 100%;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    h2 {
+      color: #308091;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin-bottom: 30px;
+    }
+
+    li {
+      background-color: #ffffff10;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+
+    li strong {
+      color: #6ec1e4;
+    }
+
+    #probabilityChart {
+      margin-top: 40px;
+    }
+
+    .insight-section {
+      margin-top: 40px;
+    }
+
+    .insight-section h3 {
+      color: #6ec1e4;
+      margin-bottom: 15px;
+    }
+
+    .back-link {
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    .back-link a {
+      text-decoration: none;
+      color: #031f3f;
+      background: linear-gradient(135deg, #e0f7fa, #b0bec5);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(176, 190, 197, 0.3);
+      font-size: 14px;
+    }
+
+    .back-link a:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="result-container">
+    <h2>Student Prediction Result</h2>
+    <ul>
+      <li><strong>Name:</strong> {{ name }}</li>
+      <li><strong>Midterm Score:</strong> {{ midterm }}</li>
+      <li><strong>Final Exam Score:</strong> {{ final }}</li>
+      <li><strong>Project Score:</strong> {{ project }}</li>
+      <li><strong>Attendance:</strong> {{ attendance }}%</li>
+      <li><strong>Scholarship Eligibility:</strong> {{ beasiswa }}</li>
+      <li><strong>Non-Academic Activity:</strong> {{ non_akademik }}</li>
+      <li><strong>Grade Consistency:</strong> {{ konsistensi }}</li>
+      <li><strong>Internship Readiness:</strong> {{ magang }}</li>
+    </ul>
+
+    <div class="insight-section">
+      <h3>📊 Insights</h3>
+      <ul>
+        <li>{{ insight_beasiswa }}</li>
+        <li>{{ insight_non_akademik }}</li>
+        <li>{{ insight_konsistensi }}</li>
+        <li>{{ insight_magang }}</li>
+      </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <canvas id="probabilityChart" width="400" height="300"></canvas>
+
+    <script>
+  const probabilities = {{ probabilities_json|safe }};
+
+  const data = {
+    labels: ['Scholarship', 'Non-Academic', 'Consistency', 'Internship'],
+    datasets: [{
+      label: 'Prediction Confidence',
+      backgroundColor: ['#e0f7fa', '#b0bec5', '#90a4ae', '#ffffff'],
+      borderColor: ['#00bcd4', '#78909c', '#607d8b', '#cfd8dc'],
+      borderWidth: 1,
+      data: [
+        probabilities.beasiswa,
+        probabilities.non_akademik,
+        probabilities.konsistensi,
+        probabilities.magang
+      ]
+    }]
+  };
+
+  new Chart(
+    document.getElementById('probabilityChart'),
+    {
+      type: 'bar',
+      data: data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 1,
+            ticks: {
+              callback: function(value) {
+                return (value * 100).toFixed(0) + '%';
+              },
+              color: '#ffffff'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#ffffff'
+            }
+          }
+        }
+      }
+    }
+  );
+</script>
+
+
+    <div class="back-link">
+      <a href="{% url 'altara_predict' %}">🔙 Back to Form</a>
+    </div>
+  </div>
+</body>
+</html>

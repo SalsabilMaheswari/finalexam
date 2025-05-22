@@ -1,15 +1,17 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'finalexampredict/css/navstyle.css'%}"/>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
 <nav class="navbar">
   <div class="container nav-content">
-    <a href="{% url 'home' %}"><h1 class="logo">ROSO ROSO ROSO</h1></a>
+    <a href="{% url 'home' %}"><h1 class="logo">STUDIVY</h1></a>
     <ul class="nav-links">
       <li><a href="{% url 'home' %}">Home</a></li>
       <li><a href="{% url 'about' %}">About</a></li>
-      <li><a href="member1.html">Member 1</a></li>
-      <li><a href="member2.html">Member 2</a></li>
-      <li><a href="member3.html">Member 3</a></li>
-      <li><a href="{% url 'maheswari' %}">Member 4</a></li>
+      <li><a href="member1.html">Meily</a></li>
+      <li><a href="{% url 'member2' %}">Putri</a></li>
+      <li><a href="member3.html">Riflah</a></li>
+      <li><a href="{% url 'maheswari' %}">Mahes</a></li>
     </ul>
   </div>
 </nav>

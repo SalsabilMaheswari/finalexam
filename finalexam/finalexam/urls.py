@@ -20,4 +20,9 @@ from django.urls import path, include
 urlpatterns = [
     path('', include('finalexampredict.urls')),
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
+=======
+    path('altara/', include('altara.urls')),
+    path('', include('finalexampredict.urls'))
+>>>>>>> 2497913 (Update project files and apply .gitignore cleanup)
 ]

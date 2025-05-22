@@ -4,55 +4,188 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Data Science Project</title>
+  <title>STUDIVY – Smart Learning Insight</title>
   <link rel="stylesheet" href="{% static 'finalexampredict/css/style.css'%}"/>
-  <!-- <script defer src="{% static 'finalexampredict/js/navbar.js' %}"></script> -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0c1a2b;
+      color: #f0f0f0;
+    }
 
+    header {
+      background: linear-gradient(to right,#000f24, #397886);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 3.5rem;
+      color: #ffffff;
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      color: #dcdcdc;
+      margin-top: 0.5rem;
+    }
+
+    main.container {
+      padding: 3rem 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      color: #84b1ff;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      background-color:  #050e18;
+      margin-bottom: 0.75rem;
+      padding: 0,3rem;
+      border-radius: 10px;
+      color: #e0e0e0;
+    }
+
+    footer {
+      background-color: #020b14;
+      padding: 1.5rem;
+      text-align: center;
+      color: #ccc;
+    }
+
+    .highlight {
+      color: #6dc5ff;
+      font-weight: bold;
+    }
+
+        .use-case-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+
+    .use-case-card {
+      background-color: #050e18;
+      flex: 1 1 calc(25% - 1rem);
+      border-radius: 10px;
+      padding: 1.5rem;
+      color: #e0e0e0;
+      min-width: 200px;
+      max-width: 240px;
+      box-shadow: 0 0 10px rgba(132, 177, 255, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .use-case-card:hover {
+      transform: scale(1.03);
+    }
+
+    .use-case-card h3 {
+      margin-top: 0;
+      color: #6dc5ff;
+    }
+
+    .use-case-card ul {
+      padding-left: 1rem;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .use-case-card p {
+      margin: 0.5rem 0;
+    }
+
+    .coming-soon {
+      opacity: 0.5;
+      text-align: center;
+      font-style: italic;
+    }
+
+  </style>
 </head>
 <body>
-    <!-- <div id="navbar-placeholder"></div> -->
     {% include "finalexampredict/navbar.html" %}
+
     <header>
-    <div class="container">
-      <h1>candi prambanan</h1>
-      <p class="subtitle">bandung bandung roso roso roso</p>
-    </div>
-  </header>
+      <h1>STUDIVY</h1>
+      <p class="subtitle">Smart Education Forecast for Tomorrow’s Learners</p>
+    </header>
 
-  <main class="container">
-    <section class="intro">
-      <h2>About the Project</h2>
-      <p>
-        This data science project explores real-world datasets to uncover actionable insights.
-        By applying machine learning and statistical analysis, we aim to solve critical challenges in
-        various industries including healthcare, finance, and marketing.
-      </p>
-    </section>
+    <main class="container">
+     <section class="intro">
+  <h2>About the Project</h2>
+  <ul>
+    <li><span class="highlight">STUDIVY</span> is a data-driven platform built to improve educational outcomes using machine learning. It forecasts key academic insights to support students, instructors, and institutions.
+     The system provides predictive tools for evaluation, tracking, and decision-making. Designed for modern educational needs and personalized learning journeys.</li>
+  </ul>
+</section>
 
-    <section class="use-cases">
-      <h2>Use Cases</h2>
-      <ul>
-        <li><strong>Healthcare:</strong> Predict patient readmissions using clinical records.</li>
-        <li><strong>Finance:</strong> Detect fraudulent transactions in real-time.</li>
-        <li><strong>Marketing:</strong> Customer segmentation for personalized campaigns.</li>
-        <li><strong>Retail:</strong> Demand forecasting for inventory optimization.</li>
-      </ul>
-    </section>
+                <section class="use-cases">
+          <h2>Use Cases</h2>
+          <div class="use-case-grid">
+            <div class="use-case-card">
+              <h3>Putri</h3>
+              <p><strong>Student Outcome Prediction</strong></p>
+              <ul>
+                <li>🎓 Scholarship Eligibility</li>
+                <li>🏆 Non-Academic Involvement</li>
+                <li>📈 Grade Consistency</li>
+                <li>🚀 Internship Readiness</li>
+              </ul>
+            </div>
+            <div class="use-case-card">
+              <h3>Riflah</h3>
+              <p><strong>Instructor Performance Clustering</strong></p>
+              <ul>
+                <li>Average student grades</li>
+                <li>Assessment performance</li>
+                <li>Course effectiveness</li>
+              </ul>
+            </div>
+            <div class="use-case-card">
+              <h3>Mahes</h3>
+              <p><strong>Student Performance Overview</strong></p>
+              <ul>
+                <li>Subject grades & total scores</li>
+                <li>Assessment breakdowns</li>
+                <li>Attendance & GPA tracking</li>
+              </ul>
+            </div>
+            <div class="use-case-card coming-soon">
+              <h3>Coming Soon</h3>
+              <p>More predictive modules are on the way.</p>
+            </div>
+          </div>
+        </section>
 
-    <section class="target-users">
-      <h2>Target Users</h2>
-      <p>
-        This project is designed for data scientists, analysts, and decision-makers who need 
-        practical insights from complex data. Whether you’re a business executive or a research scholar,
-        the models and visualizations are tailored to be accessible and informative.
-      </p>
-    </section>
-  </main>
 
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 Data Science Project. All rights reserved.</p>
-    </div>
-  </footer>
+        <section class="target-users">
+          <h2>Target Users</h2>
+          <ul>
+            <li><strong>🎓 Students</strong> – Gain insight into their academic standing and internship readiness.</li>
+            <li><strong>👩‍🏫 Educators</strong> – Evaluate teaching effectiveness and track class performance.</li>
+            <li><strong>🏛️ Academic Institutions & Policymakers</strong> – Inform strategies for curriculum development, resource allocation, and educational policy.</li>
+          </ul>
+        </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 STUDIVY Project. All rights reserved.</p>
+    </footer>
 </body>
 </html>
