@@ -8,7 +8,9 @@ import numpy as np
 import joblib
 import os
 from django.conf import settings
-from .forms import StudentPerformanceForm
+from .forms import StudentPerformanceForm, GPASearchForm
+import pandas as pd
+
 
 # Create your views here.
 def home(request):
@@ -52,6 +54,7 @@ def predict_student(request):
             prediction = model.predict(features)[0]
             probability = model.predict_proba(features)[0].tolist()
 
+            
             # Return prediction and probability as JSON response
             return JsonResponse({
                 "prediction": int(prediction),
@@ -60,3 +63,35 @@ def predict_student(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
     
+def gpa_search_view(request):
+    form = GPASearchForm(request.GET or None)
+    chart_data = None
+    
+    if form.is_valid():
+        df = pd.read_csv('student_gpa_per_student.csv')
+        
+        # Apply filters
+        min_gpa = form.cleaned_data.get('min_gpa')
+        max_gpa = form.cleaned_data.get('max_gpa')
+        
+        if min_gpa is not None:
+            df = df[df['gpa'] >= min_gpa]
+        if max_gpa is not None:
+            df = df[df['gpa'] <= max_gpa]
+        
+        # Prepare chart data
+        above_3 = len(df[df['gpa'] > 3.0])
+        below_3 = len(df[df['gpa'] <= 3.0])
+        
+        chart_data = {
+            'labels': ['GPA > 3.0', 'GPA ≤ 3.0'],
+            'data': [above_3, below_3],
+            'colors': ['#36a2eb', '#ff6384'],
+            'total_students': len(df)
+        }
+    
+    return render(request, 'finalexampredict/gpa_search.html', {
+        'form': form,
+        'chart_data': chart_data
+    })
+

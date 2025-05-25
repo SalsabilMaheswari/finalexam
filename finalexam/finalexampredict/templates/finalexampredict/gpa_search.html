@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Predictor</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dashboard {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .form-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .result-panel {
+            padding: 15px;
+            background: #e9f7ef;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            min-height: 80px;
+        }
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Student Performance Predictor</h1>
+        
+        <div class="form-panel">
+            <form id="predictionForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_avg_grade">Average Grade (0-100):</label>
+                    {{ form.avg_grade }}
+                </div>
+                <div class="form-group">
+                    <label for="id_avg_score">Average Score (0-100):</label>
+                    {{ form.avg_score }}
+                </div>
+                <div class="form-group">
+                    <label for="id_avg_attendance">Attendance Percentage:</label>
+                    {{ form.avg_attendance }}
+                </div>
+                <div class="form-group">
+                    <label for="id_total_assessment">Total Assessments:</label>
+                    {{ form.total_assessment }}
+                </div>
+                <div class="form-group">
+                    <label for="id_gpa">Current GPA (0.0-4.0):</label>
+                    {{ form.gpa }}
+                </div>
+                <button type="submit">Predict Performance</button>
+            </form>
+        </div>
+        
+        <div class="result-panel" id="statusBox">
+            Submit student data to get performance prediction
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="predictionChart"></canvas>
+        </div>
+    </div>
+
+    <script src="{% static 'finalexampredict/js/predict_form.js' %}"></script>
+</body>
+</html>

@@ -50,7 +50,7 @@ class Command(BaseCommand):
             data.append({
                 'stu_id': student.stu_id,
                 'name': student.name,
-                'dept_id': student.dept_id,
+                'dept_id': student.dept_id, 
                 'avg_grade': round(avg_grade, 2),
                 'avg_score': round(avg_avg_score, 2),
                 'avg_attendance': round(avg_attendance, 2),

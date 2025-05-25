@@ -96,3 +96,37 @@ document.addEventListener("DOMContentLoaded", function() {
         return cookieValue;
     }
 });
+
+function formatGPAInput() {
+    const gpaInput = document.getElementById('id_gpa');
+    if (!gpaInput) {
+        console.warn('GPA input not found.');
+        return;
+    }
+
+    gpaInput.addEventListener('input', function () {
+        let value = gpaInput.value;
+
+        // Hapus karakter selain angka dan titik
+        value = value.replace(/[^0-9.]/g, '');
+
+        // Cegah lebih dari 1 titik
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts[1];
+        }
+
+        // Maksimal 2 angka di belakang koma
+        if (parts.length === 2 && parts[1].length > 2) {
+            parts[1] = parts[1].slice(0, 2);
+            value = parts[0] + '.' + parts[1];
+        }
+
+        // Kalau nilai > 4, bagi 10
+        if (parseFloat(value) > 4) {
+            value = (parseFloat(value) / 10).toFixed(2);
+        }
+
+        gpaInput.value = value;
+    });
+}

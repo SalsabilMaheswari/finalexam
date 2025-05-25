@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from . import admin_view
-from .views import student_performance_view, predict_student
+from .views import student_performance_view, predict_student, gpa_search_view
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -13,5 +13,5 @@ urlpatterns = [
     path('performance-view/', student_performance_view, name='student_performance_view'),
     path('input-user', student_performance_view, name='student_performance_view'),
     path('predict-student/', predict_student, name='predict_student'),
-
+     path('gpa-search/', gpa_search_view, name='gpa_search'),
 ]

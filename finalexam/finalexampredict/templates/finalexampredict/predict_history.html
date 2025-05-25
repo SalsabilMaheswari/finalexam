@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction History</title>
+    <link rel="stylesheet" href="{% static 'finalexampredict/css/style.css' %}" />
+</head>
+<body>
+{% include "finalexampredict/navbar.html" %}
+<div class="container">
+    <h1>Prediction History</h1>
+    <div class="table-history">
+    <table>
+        <thead>
+            <tr>
+                <th>Avg Grade</th>
+                <th>Avg Score</th>
+                <th>Attendance</th>
+                <th>Total Assessments</th>
+                <th>GPA</th>
+                <th>Prediction</th>
+                <th>Good Performance</th>
+                <th>Needs Improvement</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in histories %}
+            <tr>
+                <td>{{ p.avg_grade }}</td>
+                <td>{{ p.avg_score }}</td>
+                <td>{{ p.avg_attendance }}</td>
+                <td>{{ p.total_assessment }}</td>
+                <td>{{ p.gpa }}</td>
+                <td>{{ p.prediction }}</td>
+                <td>{{ p.probability_good|floatformat:2 }}</td>
+                <td>{{ p.probability_not_good|floatformat:2 }}</td>
+                <td>{{ p.created_at }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="9" class="text-center text-muted">No prediction history yet.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+</body>
+</html>

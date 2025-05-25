@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
         # 4. Train-test split
         X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42 #20% of the total dataset is used for test data (test size)
+            X, y, test_size=0.3, random_state=42 #20% of the total dataset is used for test data (test size)
         ) 
 
         # 5. Train model
