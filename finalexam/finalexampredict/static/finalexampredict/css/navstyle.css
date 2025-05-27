@@ -1,12 +1,28 @@
+/* GLOBAL RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* GLOBAL FONT */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color:  #050e18; /* soft background */
+}
+
+/* NAVBAR STYLE */
 .navbar {
-  background-color: #004d99;
-  padding: 0.2rem 0;
+  background-color:  #050e18; /* navy keabu-abuan */
+  padding: 0.8rem 1rem;
   position: sticky;
   top: 0;
   width: 100%;
   z-index: 999;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(76, 113, 207, 0.15);
+  transition: background-color 0.3s ease;
 }
+
 
 .navbar a {
   text-decoration: none;
@@ -16,28 +32,60 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* LOGO */
 .logo {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-family: 'Pacifico', cursive;
+  color: #ffffff;
+  font-size: 1.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: transform 0.3s ease;
 }
 
+.logo:hover {
+  transform: scale(1.1);
+}
+
+/* Adjust links to space evenly */
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
 }
-
 .nav-links li a {
-  color: white;
+  color: #e5e7eb;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s ease;
+  font-size: 1rem;
+  transition: color 0.3s ease, transform 0.3s ease, border-bottom 0.3s ease;
+  position: relative;
+}
+
+.nav-links li a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #ffffff;
+  transition: 0.3s ease;
+}
+
+.nav-links li a:hover::after {
+  width: 100%;
 }
 
 .nav-links li a:hover {
-  color: #a8d0f0;
+  color: #ffffff;
+  transform: scale(1.05);
 }
+
 

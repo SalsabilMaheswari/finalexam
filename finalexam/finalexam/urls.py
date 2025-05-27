@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('finalexampredict.urls')),
+
     path('admin/', admin.site.urls),
+    path('altara/', include('altara.urls')),
+    path('', include('finalexampredict.urls'))
 ]

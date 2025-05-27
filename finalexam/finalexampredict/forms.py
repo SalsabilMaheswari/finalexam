@@ -22,3 +22,20 @@ class GPASearchForm(forms.Form):
         required=False,
         widget=forms.NumberInput(attrs={'step': '0.1'})
     )
+
+ATTENDANCE_CHOICES = [
+    ('above', 'Above'),
+    ('below', 'Below'),
+]
+
+ASSESSMENT_CHOICES = [
+    ('above', 'Above'),
+    ('below', 'Below'),
+]
+
+class StudentActivitySearchForm(forms.Form):
+    attendance_filter = forms.ChoiceField(choices=ATTENDANCE_CHOICES, label="Attendance Filter")
+    attendance_value = forms.FloatField(label="Attendance Value (%)", min_value=0, max_value=100)
+
+    assessment_filter = forms.ChoiceField(choices=ASSESSMENT_CHOICES, label="Assessment Filter")
+    assessment_value = forms.IntegerField(label="Assessment Value", min_value=0)

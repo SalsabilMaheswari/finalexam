@@ -1,0 +1,21 @@
+course_id,name,avg_grade,difficulty,total_student
+1,Course 1,67.69,Easy,103
+2,Course 2,68.71,Medium,111
+3,Course 3,69.76,Hard,98
+4,Course 4,68.32,Hard,90
+5,Course 5,67.12,Hard,96
+6,Course 6,72.13,Medium,98
+7,Course 7,71.24,Hard,106
+8,Course 8,69.8,Easy,105
+9,Course 9,70.59,Medium,115
+10,Course 10,71.78,Easy,124
+11,Course 11,66.71,Hard,106
+12,Course 12,69.22,Medium,103
+13,Course 13,72.08,Easy,97
+14,Course 14,70.75,Medium,102
+15,Course 15,69.23,Medium,115
+16,Course 16,71.49,Medium,103
+17,Course 17,70.5,Hard,113
+18,Course 18,68.83,Hard,103
+19,Course 19,72.17,Easy,104
+20,Course 20,69.96,Easy,113

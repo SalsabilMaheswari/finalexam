@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Student Activity</title>
+  <link rel="stylesheet" href="{% static 'finalexampredict/css/style.css' %}">
+</head>
+<body>
+{% include 'finalexampredict/navbar.html' %}
+<main class="container">
+  <h1>Search Student Activity</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-field">{{ form.attendance_filter.label_tag }} {{ form.attendance_filter }}</div>
+    <div class="form-field">{{ form.attendance_value.label_tag }} {{ form.attendance_value }}</div>
+    <div class="form-field">{{ form.assessment_filter.label_tag }} {{ form.assessment_filter }}</div>
+    <div class="form-field">{{ form.assessment_value.label_tag }} {{ form.assessment_value }}</div>
+    <button type="submit">Search</button>
+  </form>
+
+  {% if results %}
+    <h2 style="margin-top: 2rem;">Results</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Dept ID</th>
+          <th>Attendance (%)</th>
+          <th>Total Course</th>
+          <th>Total Assessment</th>
+          <th>Performance Label</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in results %}
+          <tr>
+            <td>{{ item.stu_id }}</td>
+            <td>{{ item.dept_id }}</td>
+            <td>{{ item.attendance_pct }}</td>
+            <td>{{ item.total_course }}</td>
+            <td>{{ item.total_assessment }}</td>
+            <td>{{ item.performance_label }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% elif results is not none %}
+    <p>No results found.</p>
+  {% endif %}
+
+</main>
+</body>
+</html>
