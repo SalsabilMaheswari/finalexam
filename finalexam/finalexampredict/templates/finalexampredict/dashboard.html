@@ -1,65 +1,76 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Student Performance Prediction</title>
-  <link rel="stylesheet" href="{% static 'finalexampredict/css/style.css' %}" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Student Performance Prediction</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'finalexampredict/css/style.css' %}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    {% include "finalexampredict/navbar.html" %}
 
-  <!-- Navbar -->
-  {% include "finalexampredict/navbar.html" %}
-
-  <!-- Main Content -->
-  <main class="container">
-    <div class="title">
-        <h1>Student Performance Prediction</h1>
-    </div>
-
-    <!-- Prediction Form -->
-    <form id="predictionForm">
-      {% csrf_token %}
-      <div class="form-field">
-        <label for="id_avg_grade">Average Grade:</label>
-        {{ form.avg_grade }}
-      </div>
-      <div class="form-field">
-        <label for="id_avg_score">Average Score:</label>
-        {{ form.avg_score }}
-      </div>
-      <div class="form-field">
-        <label for="id_avg_attendance">Average Attendance (%):</label>
-        {{ form.avg_attendance }}
-      </div>
-      <div class="form-field">
-        <label for="id_total_assessment">Total Assessments:</label>
-        {{ form.total_assessment }}
-      </div>
-      <div class="form-field">
-        <label for="id_gpa">GPA:</label>
-        {{ form.gpa }}
+    <!-- Main Content -->
+    <main class="container">
+      <div class="title">
+        <h1>Course Performance Prediction</h1>
       </div>
 
-      <button type="submit">Predict Performance</button>
-    </form>
+      <!-- Prediction Form -->
+      <form id="predictionForm">
+        {% csrf_token %}
+        <div class="form-field">
+          <label for="avg_grade">Average Grade:</label>
+          <input
+            type="number"
+            id="avg_grade"
+            name="avg_grade"
+            required
+            min="0"
+            max="100"
+          />
+        </div>
+        <div class="form-field">
+          <label for="difficulty">Difficulty:</label>
+          <select id="difficulty" name="difficulty" required>
+            <option value="0">Easy</option>
+            <option value="1">Medium</option>
+            <option value="2">Hard</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="total_student">Number of Students:</label>
+          <input
+            type="number"
+            id="total_student"
+            name="total_student"
+            required
+            min="90"
+          />
+        </div>
 
-    <!-- Status Box -->
-    <div id="statusBox">Waiting for predictions...</div>
+        <button type="submit">Predict Performance</button>
+      </form>
 
-    <!-- Chart Area -->
-    <canvas id="predictionChart" width="600" height="300"></canvas>
-  </main>
+      <!-- Chart Area -->
+      <div class="chart-container">
+        <h3>Cluster Visualization</h3>
+        <canvas id="clusterChart" width="600" height="400"></canvas>
+      </div>
+    </main>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>© 2025 MyProject. All rights reserved.</p>
-    </div>
-  </footer>
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p>© 2025 MyProject. All rights reserved.</p>
+      </div>
+    </footer>
 
-  <!-- JS -->
-  <script src="{% static 'finalexampredict/js/prediction_form.js' %}"></script>
-</body>
+    <!-- JS -->
+    <script src="{% static 'finalexampredict/js/course_prediction.js' %}"></script>
+  </body>
 </html>

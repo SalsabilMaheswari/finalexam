@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Performance Cluster</title>
+    <link rel="stylesheet" href="{% static 'finalexampredict/css/clustering.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    
+    <!-- Navbar -->
+  {% include "finalexampredict/navbar.html" %}   
+    <main class="container">
+    <div class="title">
+        <h2>Test New Course Data</h2>
+    </div>
+<form id="courseForm">
+    {% csrf_token %}
+    <p>
+        <label for="avg_grade">Average Grade:</label>
+        <input type="number" id="avg_grade" name="avg_grade" required min="0" max="100">
+    </p>
+    <p>
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty" name="difficulty" required>
+            <option value="0">Easy</option>
+            <option value="1">Medium</option>
+            <option value="2">Hard</option>
+        </select>
+    </p>
+    <p>
+        <label for="total_student">Number of Students:</label>
+        <input type="number" id="total_student" name="total_student" required min="90">
+    </p>
+    <button type="submit">Predict Cluster</button>
+</form>
+
+
+<h3>Cluster Visualization</h3>
+<canvas id="clusterChart" width="600" height="400"></canvas>
+
+ <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2025 MyProject. All rights reserved.</p>
+    </div>
+  </footer>
+
+<script src="{% static 'finalexampredict/js/course_prediction.js' %}"></script>
+
+</body>
+</html>

@@ -20,7 +20,7 @@ class Enrollment(models.Model):
         managed = False
 
 class CourseDifficulty(models.Model):
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, db_column='course_id', primary_key=True)
+    course = models.OneToOneField(Course, on_delete=models.CASCADE, db_column='course_id', primary_key=True)
     difficulty_level = models.IntegerField()
 
     class Meta:
@@ -33,7 +33,13 @@ class ModelInfo(models.Model):
     training_data = models.CharField(max_length=255)
     model_summary = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    creator = models.CharField(max_length=100, default='maheswari')
+    use_case = models.CharField(max_length=100, default='courses performance prediction')
+    model_type = models.CharField(max_length=50, choices=[
+        ('classification', 'Classification'),
+        ('clustering', 'Clustering'),
+        ('regression', 'Regression')
+    ], default='clustering')
 
     class Meta:
         db_table = 'model_info'
-

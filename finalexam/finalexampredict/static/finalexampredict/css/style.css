@@ -273,7 +273,7 @@ thead th:nth-child(5) {
 .title h1 {
   text-align: center;
   margin: 2rem 0;
-  color: #004d99;
+  color: #6dc5ff;
   font-size: 2.2rem;
   font-weight: 700;
 }
@@ -301,7 +301,7 @@ form#predictionForm {
   color: #333;
 }
 
-.form-field input {
+.form-field input, select {
   width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid #ccc;
@@ -345,16 +345,6 @@ form#predictionForm button[type="submit"]:hover {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
 }
 
-/* Chart Canvas */
-canvas#predictionChart {
-  display: block;
-  max-width: 960px;
-  margin: 3rem auto;
-  background-color: #ffffff;
-  padding: 1.5rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-}
 
 .table-history table {
   width: 100%;
@@ -473,4 +463,34 @@ canvas#predictionChart {
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 1rem;
+}
+
+/* Cluster Visualization Area */
+.chart-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.chart-container h3 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #004d99;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+#clusterChart {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* Optional: smooth transition saat chart load */
+canvas {
+  transition: all 0.3s ease;
 }

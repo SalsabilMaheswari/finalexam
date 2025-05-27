@@ -7,7 +7,7 @@ import numpy as np
 import joblib
 import os
 from django.conf import settings
-from .forms import StudentPerformanceForm, GPASearchForm, StudentActivitySearchForm
+from .forms import StudentPerformanceForm, CourseTestForm
 import pandas as pd
 
 
@@ -28,36 +28,45 @@ def maheswari(request):
 def member3(request):
     return render(request,"finalexampredict/member3.html")
 
-def student_activity_search_view(request):
-    form = StudentActivitySearchForm()
-    results = None
+def course_dashboard(request):
+    form = CourseTestForm()
+    return render(request, 'finalexampredict/clustering.html', {'form': form})
 
+@csrf_exempt
+def predict_course_cluster(request):
     if request.method == 'POST':
-        form = StudentActivitySearchForm(request.POST)
-        if form.is_valid():
-            # Get form values
-            attendance_filter = form.cleaned_data['attendance_filter']
-            attendance_value = form.cleaned_data['attendance_value']
-            assessment_filter = form.cleaned_data['assessment_filter']
-            assessment_value = form.cleaned_data['assessment_value']
+        try:
+            data = json.loads(request.body)
 
-            # Load CSV (hasil ETL-mu tadi)
-            df = pd.read_csv('student_activity_dataset.csv')
+            # Load model & scaler
+            model_path = os.path.join(settings.BASE_DIR, 'course_clustering_model.pkl')
+            scaler_path = os.path.join(settings.BASE_DIR, 'course_scaler.pkl')
+            model = joblib.load(model_path)
+            scaler = joblib.load(scaler_path)
 
-            # Filtering logic
-            if attendance_filter == 'above':
-                df = df[df['attendance_pct'] > attendance_value]
-            else:
-                df = df[df['attendance_pct'] < attendance_value]
+            # Map difficulty
+            difficulty_map = {
+                "Easy": 1,
+                "Medium": 2,
+                "Hard": 3
+            }
+            difficulty = difficulty_map.get(data['difficulty'], 0)
 
-            if assessment_filter == 'above':
-                df = df[df['total_assessment'] > assessment_value]
-            else:
-                df = df[df['total_assessment'] < assessment_value]
+            # Prepare input
+            X = np.array([
+                data['avg_grade'],
+                difficulty,
+                data['total_student']
+            ]).reshape(1, -1)
 
-            results = df.to_dict(orient='records')
+            X_scaled = scaler.transform(X)
+            cluster = model.predict(X_scaled)[0]
 
-    return render(request, 'finalexampredict/search.html', {
-        'form': form,
-        'results': results
-    })
+            return JsonResponse({
+                'cluster': int(cluster),
+                'input': X.tolist(),
+                'scaled_input': X_scaled.tolist()
+            })
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
