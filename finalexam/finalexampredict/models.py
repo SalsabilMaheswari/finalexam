@@ -31,6 +31,8 @@ class CourseDifficulty(models.Model):
         managed = False
     
     
+    
+    
 class Attendance(models.Model):
     attendance_id = models.IntegerField(primary_key=True)
     enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE, db_column='enroll_id')
@@ -42,6 +44,7 @@ class Attendance(models.Model):
 
     def __str__(self):
         return f'{self.attendance_percentage}%'
+    
     
 class ModelInfo(models.Model):
     model_name = models.CharField(max_length=100)

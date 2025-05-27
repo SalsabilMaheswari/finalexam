@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'finalexampredict',
     'altara',
     'member1',
+ 
+
 ]
 
 MIDDLEWARE = [
@@ -87,7 +89,6 @@ WSGI_APPLICATION = 'finalexam.wsgi.application'
 #     }
 # }
 DATABASES = {
-
      'default': {
          'ENGINE': 'django.db.backends.postgresql',
          'NAME': 'examcase01_fixed',

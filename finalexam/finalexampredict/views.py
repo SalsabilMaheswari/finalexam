@@ -10,7 +10,6 @@ from django.conf import settings
 from .forms import StudentPerformanceForm, CourseTestForm
 import pandas as pd
 
-
 # Create your views here.
 def home(request):
     return render(request,"finalexampredict/home.html")
@@ -27,7 +26,6 @@ def maheswari(request):
 
 def member3(request):
     return render(request,"finalexampredict/member3.html")
-
 
 def course_dashboard(request):
     form = CourseTestForm()
