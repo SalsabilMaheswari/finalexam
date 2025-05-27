@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 
 # Create your models here.
 class Course(models.Model):
@@ -24,9 +26,23 @@ class CourseDifficulty(models.Model):
     difficulty_level = models.IntegerField()
 
     class Meta:
+
         db_table = 'course_difficulty'
         managed = False
+    
+    
+class Attendance(models.Model):
+    attendance_id = models.IntegerField(primary_key=True)
+    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE, db_column='enroll_id')
+    attendance_percentage = models.FloatField()
 
+    class Meta:
+        db_table = 'attendance'
+        managed = False
+
+    def __str__(self):
+        return f'{self.attendance_percentage}%'
+    
 class ModelInfo(models.Model):
     model_name = models.CharField(max_length=100)
     model_file = models.CharField(max_length=255)
@@ -43,3 +59,4 @@ class ModelInfo(models.Model):
 
     class Meta:
         db_table = 'model_info'
+

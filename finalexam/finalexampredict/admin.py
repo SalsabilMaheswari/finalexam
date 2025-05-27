@@ -16,3 +16,4 @@ class ModelInfoAdmin(admin.ModelAdmin):
     def retrain_button(self, obj):
         return format_html('<a class="button" href="/admin/retrain-model/{}/">Retrain</a>', obj.id)
     retrain_button.short_description = 'Retrain'
+

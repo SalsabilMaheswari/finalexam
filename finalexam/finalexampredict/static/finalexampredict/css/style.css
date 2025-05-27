@@ -193,6 +193,7 @@ ul li {
   font-size: 1.2rem;
 }
 
+Updated upstream
 .team-card p,
 li {
   font-size: 0.9rem;
@@ -494,3 +495,10 @@ form#predictionForm button[type="submit"]:hover {
 canvas {
   transition: all 0.3s ease;
 }
+
+.team-card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+
