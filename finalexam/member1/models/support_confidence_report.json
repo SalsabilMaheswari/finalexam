@@ -1,0 +1,72 @@
+{
+    "Christina Hobbs": {
+        "support": 1,
+        "confidence": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0
+    },
+    "Denise Fritz": {
+        "support": 2,
+        "confidence": 100.0,
+        "precision": 66.67,
+        "recall": 100.0,
+        "f1_score": 80.0
+    },
+    "Frederick Stevens": {
+        "support": 1,
+        "confidence": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0
+    },
+    "Gregory Pearson": {
+        "support": 1,
+        "confidence": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0
+    },
+    "Heidi Stafford": {
+        "support": 1,
+        "confidence": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0
+    },
+    "Jessica Graves": {
+        "support": 1,
+        "confidence": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0
+    },
+    "Joel Foster": {
+        "support": 1,
+        "confidence": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0
+    },
+    "Jonathon Gonzalez": {
+        "support": 1,
+        "confidence": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0
+    },
+    "Scott Harrison": {
+        "support": 1,
+        "confidence": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0
+    },
+    "Steven Gomez": {
+        "support": 2,
+        "confidence": 50.0,
+        "precision": 50.0,
+        "recall": 50.0,
+        "f1_score": 50.0
+    }
+}

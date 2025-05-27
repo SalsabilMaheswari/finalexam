@@ -1,0 +1,318 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Top 3 Best Instructor Prediction</title>
+    <!-- <link rel="stylesheet" href="{% static 'member1/css/member1.css' %}"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #5685a7, #829dd6);
+            padding: 75px 40px 60px 40px;
+            color: #ebf5ff;
+            margin: 0;
+        }
+
+        nav {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            padding: 0.2rem!important;
+            background-color: #004d99 !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            font-size: 18px !important;
+            position: fixed !important; 
+            top: 0;
+            left: 0;
+            
+            z-index: 1000;
+
+        }
+
+        nav a {
+            text-decoration: none;
+        }
+
+        nav a:hover,
+        nav a.active {
+            background-color: #1976d2 !important;
+            color: white !important;
+        }
+
+        h2 {
+            text-align: center;
+            color: #083153;
+            margin-bottom: 10px;
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        p.description {
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            background-color: #acccec;
+            border-left: 6px solid #1976d2;
+            padding: 20px 25px;
+            font-size: 18px;
+            line-height: 1.5;
+            color: #37474f;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(25, 118, 210, 0.15);
+            font-style:normal;
+            text-align: center;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #94b6c5;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+            font-size: 18px;
+        }
+
+        label {
+            margin-top: 25px;
+            display: block;
+            font-weight: bold;
+            color: #050b3d;
+            font-size: 18px;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px;
+            margin-top: 8px;
+            border-radius: 10px;
+            border: 1px solid #bbb;
+            background-color: #f4f6f8;
+            font-size: 17px;
+        }
+
+        button {
+            margin-top: 40px;
+            width: 100%;
+            padding: 15px;
+            background-color: #042546;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #051d41;
+            transform: scale(1.02);
+            
+        }
+
+        #resultsContainer {
+            margin-top: 60px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            background: #bfcad6;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        #resultsContainer h3 {
+            margin-bottom: 25px;
+            color: #16318a;
+            font-size: 26px;
+            text-align: center;
+        }
+
+        #resultList {
+            padding-left: 25px;
+            margin-bottom: 35px;
+        }
+
+        #resultList li {
+            margin: 12px 0;
+            font-size: 18px;
+            color: #01090e;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 90%;
+            height: 350px !important;
+        }
+
+        /* Responsive navbar */
+        @media screen and (max-width: 768px) {
+            nav {
+                font-size: 16px !important;
+                padding: 12px 15px !important;
+                gap: 18px !important;
+            }
+
+            nav a {
+                padding: 8px 12px !important;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            nav {
+                flex-direction: column !important;
+                align-items: center;
+                gap: 12px !important;
+                padding: 15px !important;
+                font-size: 15px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include 'finalexampredict/navbar.html' %}
+    <h2>🎯 Predict Top 3 Best Instructors</h2>
+
+    <p class="description">
+        🎓 <strong>Discover the top 3 instructors</strong> best suited for your selected course, semester, and department.<br>
+        Leveraging historical teaching data and performance insights, this system guides you in choosing <strong>the most effective educators</strong> to enhance student learning.<br>
+        Empower your academic journey with informed decisions for a consistent and quality learning experience.
+    </p>
+
+    <form id="predictionForm">
+        {% csrf_token %}
+        <label for="course_name">📚 Course Name:</label>
+        <select name="course_name" required>
+            <option value="">-- Select Course --</option>
+            <option value="Course 1">Course 1</option>
+            <option value="Course 2">Course 2</option>
+            <option value="Course 3">Course 3</option>
+            <option value="Course 4">Course 4</option>
+            <option value="Course 5">Course 5</option>
+            <option value="Course 6">Course 6</option>
+            <option value="Course 7">Course 7</option>
+            <option value="Course 8">Course 8</option>
+            <option value="Course 9">Course 9</option>
+            <option value="Course 10">Course 10</option>
+            <option value="Course 11">Course 11</option>
+            <option value="Course 12">Course 12</option>
+            <option value="Course 13">Course 13</option>
+            <option value="Course 14">Course 14</option>
+            <option value="Course 15">Course 15</option>
+            <option value="Course 16">Course 16</option>
+            <option value="Course 17">Course 17</option>
+            <option value="Course 18">Course 18</option>
+            <option value="Course 19">Course 19</option>
+            <option value="Course 20">Course 20</option>
+        </select>
+
+        <label for="semester">📅 Semester:</label>
+        <select name="semester" required>
+            <option value="">-- Select Semester --</option>
+            <option value="Semester 1">Semester 1</option>
+            <option value="Semester 2">Semester 2</option>
+            <option value="Semester 3">Semester 3</option>
+        </select>
+
+        <label for="department_name">🏫 Department:</label>
+        <select name="department_name" required>
+            <option value="">-- Select Department --</option>
+            <option value="Information Systems">Information Systems</option>
+            <option value="Information Technology">Information Technology</option>
+        </select>
+
+        <button type="submit">🚀 Predict Now</button>
+    </form>
+
+    <div id="resultsContainer">
+        <h3>✅ Top 3 Recommended Instructors</h3>
+        <ol id="resultList"></ol>
+        <canvas id="chartCanvas"></canvas>
+    </div>
+
+    <script>
+        document.getElementById("predictionForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const params = new URLSearchParams({
+                course_name: formData.get("course_name"),
+                semester: formData.get("semester"),
+                department_name: formData.get("department_name")
+            });
+
+            fetch("{% url 'member1:predict_top_3_instructors' %}?" + params, {
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.top_3_instructors && data.probabilities) {
+                    const resultList = document.getElementById("resultList");
+                    const resultsContainer = document.getElementById("resultsContainer");
+                    const ctx = document.getElementById("chartCanvas").getContext("2d");
+
+                    resultList.innerHTML = "";
+                    const labels = [];
+                    const probs = [];
+
+                    data.top_3_instructors.forEach((description, index) => {
+                        resultList.innerHTML += `<li>${description}</li>`;
+
+                        let name = description.split(" has taught ")[0];
+                        labels.push(name);
+
+                        let prob_percent = (data.probabilities[index] * 100).toFixed(2);
+                        probs.push(prob_percent);
+                    });
+
+                    resultsContainer.style.display = "block";
+
+                    if (window.myChart) {
+                        window.myChart.destroy();
+                    }
+
+                    window.myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Prediction Confidence (%)',
+                                data: probs,
+                                backgroundColor: ['#66bb6a', '#42a5f5', '#ffca28'],
+                                borderRadius: 10
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    title: { display: true, text: 'Confidence (%)' }
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    alert(data.error || "An error occurred during prediction.");
+                }
+            })
+            .catch(error => {
+                alert("Fetch error: " + error.message);
+            });
+        });
+    </script>
+</body>
+</html>
