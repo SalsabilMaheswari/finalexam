@@ -9,6 +9,7 @@ import os
 from django.conf import settings
 from .forms import StudentPerformanceForm, CourseTestForm
 import pandas as pd
+import json 
 
 # Create your views here.
 def home(request):
@@ -21,15 +22,11 @@ def member2(request):
     return render(request, 'finalexampredict/member2.html')
 
 def maheswari(request):  
-    form = StudentPerformanceForm()
+    form = CourseTestForm()
     return render(request, 'finalexampredict/dashboard.html', {'form': form})
 
 def member3(request):
     return render(request,"finalexampredict/member3.html")
-
-def course_dashboard(request):
-    form = CourseTestForm()
-    return render(request, 'finalexampredict/clustering.html', {'form': form})
 
 @csrf_exempt
 def predict_course_cluster(request):
@@ -69,3 +66,9 @@ def predict_course_cluster(request):
 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
+
+def course_cluster_chart(request):
+    df = pd.read_csv('course_performance_clustered.csv')
+    data = df.to_dict(orient='records')
+    data_json = json.dumps(data)
+    return render(request, 'finalexampredict/course_cluster_chart.html', {'data_json': data_json})

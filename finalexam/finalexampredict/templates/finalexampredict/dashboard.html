@@ -13,6 +13,10 @@
   <body>
     <!-- Navbar -->
     {% include "finalexampredict/navbar.html" %}
+    <div class="nav-buttons-topright">
+  <a href="{% url 'retrain_model' model_id=1 %}" class="nav-btn">Admin</a>
+  <a href="{% url 'cluster_chart' %}" class="nav-btn">Load Clustered CSV</a>
+</div>
 
     <!-- Main Content -->
     <main class="container">
@@ -21,27 +25,20 @@
       </div>
 
       <!-- Prediction Form -->
-      <form id="predictionForm">
+      <form id="courseForm">
         {% csrf_token %}
+
         <div class="form-field">
-          <label for="avg_grade">Average Grade:</label>
+          <label for="total_grade">Total Grade:</label>
           <input
             type="number"
-            id="avg_grade"
-            name="avg_grade"
+            id="total_grade"
+            name="total_grade"
             required
             min="0"
-            max="100"
           />
         </div>
-        <div class="form-field">
-          <label for="difficulty">Difficulty:</label>
-          <select id="difficulty" name="difficulty" required>
-            <option value="0">Easy</option>
-            <option value="1">Medium</option>
-            <option value="2">Hard</option>
-          </select>
-        </div>
+
         <div class="form-field">
           <label for="total_student">Number of Students:</label>
           <input
@@ -53,7 +50,25 @@
           />
         </div>
 
-        <button type="submit">Predict Performance</button>
+        <div class="form-field">
+          <button type="button" id="countBtn">Count</button>
+        </div>
+
+        <div class="form-field">
+          <label for="avg_grade">Average Grade:</label>
+          <input type="number" id="avg_grade" name="avg_grade" disabled />
+        </div>
+
+        <div class="form-field">
+          <label for="difficulty">Difficulty:</label>
+          <select id="difficulty" name="difficulty" required>
+            <option value="0">Easy</option>
+            <option value="1">Medium</option>
+            <option value="2">Hard</option>
+          </select>
+        </div>
+
+        <button type="submit">Input</button>
       </form>
 
       <!-- Chart Area -->

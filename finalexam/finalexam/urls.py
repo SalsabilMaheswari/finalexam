@@ -22,7 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('altara/', include('altara.urls')),
     path('', include('finalexampredict.urls')),
-    path('predict/', include('finalexampredict.urls')),
     path('member1/', include('member1.urls')),
 
 ]

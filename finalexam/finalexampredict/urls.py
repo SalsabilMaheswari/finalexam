@@ -10,6 +10,6 @@ urlpatterns = [
     path('maheswari/', views.maheswari, name='maheswari'),
     path('admin/retrain-model/<int:model_id>/', admin_view.retrain_model_view, name='retrain_model'),
     path('member3/', views.member3, name='member3'),
-    path('predictcluster/', views.course_dashboard, name='course_dashboard'),
-    path('predict-course-cluster/', views.predict_course_cluster, name='predict_course_cluster')
+    path('predict-course-cluster/', views.predict_course_cluster, name='predict_course_cluster'),
+    path('clusterchart/', views.course_cluster_chart, name='cluster_chart'),
 ]

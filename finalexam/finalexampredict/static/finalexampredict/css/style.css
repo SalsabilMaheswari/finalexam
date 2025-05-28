@@ -173,6 +173,7 @@ ul li {
   color: #e0e0e0;
   text-align: center;
   transition: transform 0.3s ease;
+  box-sizing: border-box;
 }
 
 .team-card:hover {
@@ -193,7 +194,6 @@ ul li {
   font-size: 1.2rem;
 }
 
-Updated upstream
 .team-card p,
 li {
   font-size: 0.9rem;
@@ -280,7 +280,7 @@ thead th:nth-child(5) {
 }
 
 /* Form container */
-form#predictionForm {
+form#courseForm {
   max-width: 960px;
   margin: 0 auto;
   padding: 2rem;
@@ -317,7 +317,7 @@ form#predictionForm {
 }
 
 /* Predict Button */
-form#predictionForm button[type="submit"] {
+form#courseForm button[type="submit"] {
   display: inline-block;
   background-color: #007bff;
   color: #fff;
@@ -329,9 +329,27 @@ form#predictionForm button[type="submit"] {
   transition: background-color 0.3s ease;
 }
 
-form#predictionForm button[type="submit"]:hover {
+
+form#courseForm button[type="submit"]:hover {
   background-color: #0056b3;
 }
+
+#countBtn {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#countBtn:hover {
+  background-color: #0056b3;
+}
+
 
 /* Status Box */
 #statusBox {
@@ -501,3 +519,33 @@ canvas {
   color: #555;
 }
 
+.title-cluster h1{
+  text-align: center;
+  margin: 2rem 0;
+  color: #6dc5ff;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.nav-buttons-topright {
+  position: absolute; 
+  top: 90px; 
+  right: 30px;
+  display: flex;
+  gap: 10px;
+  z-index: 500; 
+}
+
+.nav-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.nav-btn:hover {
+  background-color: #0056b3;
+}
