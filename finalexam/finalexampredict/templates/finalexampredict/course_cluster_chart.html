@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Course Clustering Result</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      rel="stylesheet"
+      href="{% static 'finalexampredict/css/style.css' %}"
+    />
+  </head>
+  <body>
+    {% include "finalexampredict/navbar.html" %}
+    <div class="title-cluster">
+      <h1>Course Performance Clustering</h1>
+    </div>
+    <div class="container">
+      <canvas id="clusterChart" width="800" height="400"></canvas>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 STUDIVY Project. All rights reserved.</p>
+    </footer>
+    <script>
+  const rawData = JSON.parse("{{ data_json|escapejs }}");
+
+  const colors = ["#FF6384", "#36A2EB", "#FFCE56"];
+  const clusterLabels = [
+        'Easy & Effective Courses',
+        'Hard & Struggling Courses',
+        'Potential to Improve Courses'
+    ];
+
+  // Buat 3 dataset per cluster
+  const datasets = [0, 1, 2].map(clusterNum => {
+    return {
+      label: clusterLabels[clusterNum],
+      data: rawData
+        .filter(item => item.cluster === clusterNum)
+        .map(item => ({
+          x: item.avg_grade,
+          y: item.total_student,
+          label: item.name,
+          cluster: item.cluster
+        })),
+      backgroundColor: colors[clusterNum],
+      pointRadius: 6
+    }
+  });
+
+  const ctx = document.getElementById("clusterChart").getContext("2d");
+  const clusterChart = new Chart(ctx, {
+    type: "scatter",
+    data: {
+      datasets: datasets
+    },
+    options: {
+      parsing: {
+        xAxisKey: "x",
+        yAxisKey: "y"
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: "Average Grade"
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: "Total Students"
+          }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (context) => {
+              const item = context.raw;
+              return `${item.label}: Avg Grade ${item.x}, Students ${item.y}, Cluster ${item.cluster}`;
+            }
+          }
+        },
+        legend: {
+          display: true,
+          position: 'top'
+        }
+      },
+      layout: {
+        padding: 20
+      }
+    },
+    plugins: [
+      {
+        id: "custom_canvas_background_color",
+        beforeDraw: (chart) => {
+          const ctx = chart.canvas.getContext("2d");
+          ctx.save();
+          ctx.globalCompositeOperation = "destination-over";
+          ctx.fillStyle = "white";
+          ctx.fillRect(0, 0, chart.width, chart.height);
+          ctx.restore();
+        }
+      }
+    ]
+  });
+</script>
+
+  </body>
+</html>

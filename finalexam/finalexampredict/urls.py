@@ -14,4 +14,6 @@ urlpatterns = [
     path('predict-course-cluster/', views.predict_course_cluster, name='predict_course_cluster'),
     path('member3/', ic_views.customer_prediction_view, name='member3'),
     path('predict_customer/', ic_views.predict_customer, name='predict_customer'),
+    path('predict-course-cluster/', views.predict_course_cluster, name='predict_course_cluster'),
+    path('clusterchart/', views.course_cluster_chart, name='cluster_chart'),
 ]
