@@ -25,7 +25,7 @@ def maheswari(request):
     return render(request, 'finalexampredict/dashboard.html', {'form': form})
 
 def member3(request):
-    return render(request,"finalexampredict/member3.html")
+    return render(request,"ic/member3.html")
 
 def course_dashboard(request):
     form = CourseTestForm()

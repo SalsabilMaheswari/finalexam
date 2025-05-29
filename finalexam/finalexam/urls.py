@@ -24,5 +24,6 @@ urlpatterns = [
     path('', include('finalexampredict.urls')),
     path('predict/', include('finalexampredict.urls')),
     path('member1/', include('member1.urls')),
+    path('ic/', include('ic.urls')),
 
 ]
