@@ -277,16 +277,6 @@ thead th:nth-child(5) {
   font-weight: 700;
 }
 
-/* Form container */
-form#predictionForm {
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #94b6c5;
-  padding: 50px;
-  border-radius: 20px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-  font-size: 18px;
-}
 
 /* Form fields */
 .form-field {
@@ -315,34 +305,84 @@ select {
   outline: none;
 }
 
-/* Predict Button */
-form#predictionForm button[type="submit"] {
-  display: inline-block;
-  background-color: #007bff;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.member3title h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    color: #9dacbc;
+    margin-bottom: 10px;
 }
 
-form#predictionForm button[type="submit"]:hover {
-  background-color: #0056b3;
+.member3title h2 + p {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #bcb1b1;
+    margin-bottom: 40px; /* space before form */
 }
 
-/* Status Box */
+
+/* Form */
+form {
+    max-width: 500px;
+    margin: 0 auto 40px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    color: #1a1a1a;
+}
+
+form p {
+    margin-bottom: 15px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 18px;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+/* Prediction status */
 #statusBox {
-  max-width: 960px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  background-color: #e9f5ff;
-  border-left: 6px solid #007bff;
-  border-radius: 12px;
-  font-size: 14px;
-  color: #333;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+    max-width: 500px;
+    margin: 0 auto 30px auto;
+    background-color: #eef6fb;
+    color: #31708f;
+    padding: 12px 15px;
+    border-left: 4px solid #31708f;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Chart style */
+canvas#predictionChart {
+    display: block;
+    margin: 0 auto;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
 }
 
 .table-history table {
@@ -635,13 +675,4 @@ form#courseForm button[type="submit"]:hover {
   color: #6dc5ff;
   font-size: 2.2rem;
   font-weight: 700;
-}
-
-form.member3-form{
-  max-width: 500px;
-    margin: 0 auto 40px auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }

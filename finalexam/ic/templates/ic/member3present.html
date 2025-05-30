@@ -1,130 +1,132 @@
-
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Real-Time Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <link rel="stylesheet" href="{% static 'finalexampredict/css/style.css' %}"> -->
-</head>
-<body>
+  </head>
+  <body>
     <!-- <div id="navbar-placeholder"></div> -->
     {% include "finalexampredict/navbar.html" %}
     <h2>Prof-o-Meter</h2>
     <p>Predict your performance based on your current data.</p>
 
     <form id="predictionForm">
-        {{form.as_p}}
-        <button type="submit">Predict</button>
+      {{form.as_p}}
+      <button type="submit">Predict</button>
     </form>
 
     <div id="statusBox">Waiting for predictions...</div>
     <canvas id="predictionChart" width="600" height="300"></canvas>
 
-
     <script>
-        const predictUrl = "{% url 'predict_customer' %}";
+      const predictUrl = "{% url 'predict_customer' %}";
     </script>
     <script src="{% static 'ic/js/teto.js' %}"></script>
-    
-</body>
-<style>
+  </body>
+  <style>
     /* Reset some defaults */
-body, h1, h2, p, form, input, button {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    body,
+    h1,
+    h2,
+    p,
+    form,
+    input,
+    button {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* Page style */
-/* body {
+    /* Page style */
+    /* body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     background-color: #f4f6f9;
     color: #333;
     padding: 40px;
 } */
 
-/* Title and subtitle area */
-h2 {
-    text-align: center;
-    font-size: 2.2rem;
-    color: #9dacbc;
-    margin-top: 40px; /* space below navbar */
-    margin-bottom: 10px;
-}
+    /* Title and subtitle area */
+    h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      color: #9dacbc;
+      margin-top: 40px; /* space below navbar */
+      margin-bottom: 10px;
+    }
 
-h2 + p {
-    text-align: center;
-    font-size: 1.1rem;
-    color: #bcb1b1;
-    margin-bottom: 40px; /* space before form */
-}
+    h2 + p {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #bcb1b1;
+      margin-bottom: 40px; /* space before form */
+    }
 
-/* Form */
-form {
-    max-width: 500px;
-    margin: 0 auto 40px auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+    /* Form */
+    form {
+      max-width: 500px;
+      margin: 0 auto 40px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
 
-form p {
-    margin-bottom: 15px;
-}
+    form p {
+      margin-bottom: 15px;
+    }
 
-input[type="text"],
-input[type="number"],
-select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-}
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
 
-button[type="submit"] {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 18px;
-    font-size: 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-}
+    button[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 18px;
+      font-size: 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
 
-button[type="submit"]:hover {
-    background-color: #0056b3;
-}
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
 
-/* Prediction status */
-#statusBox {
-    max-width: 500px;
-    margin: 0 auto 30px auto;
-    background-color: #eef6fb;
-    color: #31708f;
-    padding: 12px 15px;
-    border-left: 4px solid #31708f;
-    border-radius: 4px;
-    font-size: 14px;
-    text-align: center;
-}
+    /* Prediction status */
+    #statusBox {
+      max-width: 500px;
+      margin: 0 auto 30px auto;
+      background-color: #eef6fb;
+      color: #31708f;
+      padding: 12px 15px;
+      border-left: 4px solid #31708f;
+      border-radius: 4px;
+      font-size: 14px;
+      text-align: center;
+    }
 
-/* Chart style */
-canvas#predictionChart {
-    display: block;
-    margin: 0 auto;
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
-}
-
-</style>
+    /* Chart style */
+    canvas#predictionChart {
+      display: block;
+      margin: 0 auto;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </html>
