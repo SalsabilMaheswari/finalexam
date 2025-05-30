@@ -1,10 +1,11 @@
+import json
 import pandas as pd
 import joblib
 from ic.models import ModelInfo
 from django.core.management.base import BaseCommand
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score
 
 class Command(BaseCommand):
     help = 'Train RandomForestClassifier for lecturer performance clustering'
@@ -27,7 +28,10 @@ class Command(BaseCommand):
         # === Step 5: Evaluate ===
         y_pred = model.predict(X_test)
         report = classification_report(y_test, y_pred)
+        accuracy = accuracy_score(y_test, y_pred)
         self.stdout.write(self.style.SUCCESS("Classification Report:\n" + report))
+        self.stdout.write(self.style.SUCCESS(f"Model Accuracy: {accuracy:.4f}"))
+        self.stdout.write(self.style.SUCCESS("Model training complete."))
 
         # === Step 6: Save Model ===
         model_filename ='rfc_lecture.pkl'
@@ -43,3 +47,9 @@ class Command(BaseCommand):
             model_summary=report
         )
         self.stdout.write(self.style.SUCCESS(f'Model info saved to DB: ID {model_info.id}'))
+
+        meta_path = 'ic/rfc_meta.json'
+        with open(meta_path, 'w') as f:
+            json.dump({'accuracy': round(accuracy, 4)}, f)
+
+        self.stdout.write(self.style.SUCCESS(f'Model accuracy saved to {meta_path}'))

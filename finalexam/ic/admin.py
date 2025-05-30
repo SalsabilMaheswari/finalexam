@@ -1,9 +1,8 @@
 from django.contrib import admin
-from .models import ModelInfo
+from django.urls import reverse
 from django.utils.html import format_html
-from django.utils.timezone import now
+from .models import ModelInfo
 
-# # Register your models here.
 @admin.register(ModelInfo)
 class ModelInfoAdmin(admin.ModelAdmin):
     list_display = ('model_name', 'training_date', 'training_data', 'short_summary', 'retrain_button')
@@ -14,7 +13,6 @@ class ModelInfoAdmin(admin.ModelAdmin):
     short_summary.short_description = 'Summary'
 
     def retrain_button(self, obj):
-        return format_html('<a class="button" href="/admin/retrain-model/{}/">Retrain</a>', obj.id)
+        url = reverse('retrain_model', args=[obj.id])
+        return format_html('<a class="button" href="{}">Retrain</a>', url)
     retrain_button.short_description = 'Retrain'
-
-

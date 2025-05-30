@@ -88,6 +88,15 @@ from django.conf import settings
 #             'probability': probability
 #         })
 
+meta_path = os.path.join(os.path.dirname(__file__), 'rfc_meta.json')
+try:
+    with open(meta_path, 'r') as f:
+        model_meta = json.load(f)
+        model_accuracy = model_meta.get('accuracy', None)
+except Exception as e:
+    model_accuracy = None  # Handle missing or unreadable meta file
+    print(f"Error reading accuracy: {e}")
+
 def customer_prediction_view(request):
     form = InstructorPerformanceForm()
     return render(request, 'ic/member3.html',{'form':form})
@@ -116,5 +125,6 @@ def predict_customer(request):
 
         return JsonResponse({
             'prediction': int(prediction),
-            'probability': probability
+            'probability': probability,
+            'accuracy': model_accuracy
         })
