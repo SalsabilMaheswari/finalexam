@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import PredictionLog
+from .models import StudentRecord
 
-@admin.register(PredictionLog)
-class PredictionLogAdmin(admin.ModelAdmin):
-    list_display = ('user_name', 'model_used', 'prediction_result', 'created_at')
-    list_filter = ('model_used', 'created_at')
-    search_fields = ('user_name', 'input_data', 'prediction_result')
+@admin.register(StudentRecord)
+class StudentRecordAdmin(admin.ModelAdmin):
+    list_display = ('student_id', 'name', 'semester_name', 'average_score')
+    search_fields = ('name', 'student_id', 'semester_name')
+    list_filter = ('semester_name',)

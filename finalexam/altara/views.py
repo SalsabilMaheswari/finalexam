@@ -1,146 +1,118 @@
-from django.shortcuts import render
-import numpy as np
+import os
 import json
-from .models import PredictionLog
-from .ml_models import (
-    train_beasiswa_model,
-    train_non_akademik_model,
-    train_konsistensi_model,
-    train_magang_model,
-    decode_konsistensi_label,
-    decode_konsistensi_proba
-)
+import pandas as pd
+from django.shortcuts import render
+from .ml_models import predict_student_performance
+from .models import StudentRecord
+from django.conf import settings
 
-# Load models at server start
-beasiswa_model = train_beasiswa_model()
-non_akademik_model = train_non_akademik_model()
-konsistensi_model = train_konsistensi_model()
-magang_model = train_magang_model()
+# Load dataset
+DATASET_PATH = os.path.join(settings.BASE_DIR, 'altara_dataset.csv')
+df = pd.read_csv(DATASET_PATH) if os.path.exists(DATASET_PATH) else pd.DataFrame()
 
-konsistensi_translation = {
-    "Naik": "Improving",
-    "Turun": "Declining",
-    "Konsisten": "Consistent"
-}
+def predict_view(request):
+    query = request.GET.get('q')
+    student_data = None
+    prediction = {
+        'scholarship': '',
+        'internship': '',
+        'scholarship_details': [],
+        'internship_detail': {}
+    }
+    semesters = []
+    scores = []
+    average_total_score = None
+    average_total_attendance = None
+    top_scholarship = []
+    top_internship = []
 
-# Insight generators
-def get_insight_beasiswa(midterm, final, project, attendance, eligible):
-    if eligible:
-        return "✅ Eligible for scholarship due to strong academic scores and consistent attendance."
-    
-    reasons = []
-    if midterm < 85:
-        reasons.append("midterm score below 85")
-    if final < 85:
-        reasons.append("final exam score below 85")
-    if project < 85:
-        reasons.append("project score below 85")
-    if attendance < 90:
-        reasons.append("attendance below 90%")
+    student_names = sorted(df['name'].dropna().unique()) if not df.empty else []
 
-    if not reasons:
-        return "❌ Not eligible for scholarship based on overall combination of scores and attendance."
+    if query and not df.empty:
+        student_data_df = df[df['name'] == query]
 
-    return "❌ Not eligible for scholarship due to " + ", ".join(reasons) + "."
+        if not student_data_df.empty:
+            try:
+                # Run prediction
+                raw_prediction = predict_student_performance(student_data_df)
 
-def get_insight_non_akademik(project, attendance, exam, non_akademik):
-    if non_akademik:
-        return "📌 High project score and low attendance, probably active non-academic involvement."
-    return "📌 No significant signs of strong non-academic activity detected."
+                # Process predictions into table-ready format
+                prediction['scholarship'] = raw_prediction.get('scholarship', '')
+                prediction['internship'] = raw_prediction.get('internship', '')
+                
+                # Scholarship details list of dicts
+                prediction['scholarship_details'] = raw_prediction.get('scholarship_details', [])
+                
+                # Internship single model result as dict
+                prediction['internship_detail'] = raw_prediction.get('internship_detail', {})
 
-def get_insight_konsistensi(midterm, final):
-    diff = final - midterm
-    if diff > 5:
-        return "📈 Student shows improvement in grades (Final > Midterm)."
-    elif diff < -5:
-        return "📉 Student performance declined (Midterm > Final)."
-    else:
-        return "⚖️ Student shows consistent academic performance."
+                # Grouped data for graph
+                grouped = student_data_df.groupby('semester_name')['average_score'].mean().sort_index()
+                semesters = list(grouped.index)
+                scores = list(grouped.values)
+                student_data = student_data_df.to_dict(orient='records')
 
-def get_insight_magang(project, attendance, final, magang):
-    if magang:
-        return "🚀 Ready for internship based on solid academic performance and attendance."
-    
-    reasons = []
-    if project < 80:
-        reasons.append("project score below 80")
-    if final < 80:
-        reasons.append("final exam score below 80")
-    if attendance < 85:
-        reasons.append("attendance below 85%")
+                average_total_score = round(student_data_df['average_score'].mean(), 2)
+                average_total_attendance = round(student_data_df['attendance_percentage'].mean(), 2)
 
-    if not reasons:
-        return "⏳ Not ready for internship based on overall academic profile."
+                # Save to DB if not already exists
+                for _, row in student_data_df.iterrows():
+                    StudentRecord.objects.get_or_create(
+                        student_id=row['student_id'],
+                        semester_name=row['semester_name'],
+                        defaults={
+                            'name': row['name'],
+                            'course_name': row['course_name'],
+                            'attendance_percentage': row['attendance_percentage'],
+                            'midterm': row['midterm'],
+                            'final': row['final'],
+                            'project': row['project'],
+                            'average_score': row['average_score'],
+                        }
+                    )
 
-    return "⏳ Not ready for internship due to " + ", ".join(reasons) + "."
+                # Top 10 for scholarship
+                top_scholarship_df = (
+                    df.groupby('name')['average_score']
+                    .mean()
+                    .reset_index()
+                )
+                top_scholarship_df = top_scholarship_df[top_scholarship_df['average_score'] >= 75]
+                top_scholarship = (
+                    top_scholarship_df
+                    .sort_values(by='average_score', ascending=False)
+                    .head(10)
+                    .to_dict(orient='records')
+                )
 
-def altara_predict(request):
-    return render(request, 'altara/predict.html')
+                # Top 15 for internship
+                top_internship_df = (
+                    df.groupby('name')['average_score']
+                    .mean()
+                    .reset_index()
+                )
+                top_internship_df = top_internship_df[top_internship_df['average_score'] >= 70]
+                top_internship = (
+                    top_internship_df
+                    .sort_values(by='average_score', ascending=False)
+                    .head(15)
+                    .to_dict(orient='records')
+                )
 
-def altara_result(request):
-    if request.method == 'POST':
-        mid = float(request.POST['midterm'])
-        final = float(request.POST['final'])
-        proj = float(request.POST['project'])
-        att = float(request.POST['attendance'])
-        user_name = request.POST.get('name', 'Anonymous')
+            except Exception as e:
+                prediction = {'error': f"Prediction failed: {str(e)}"}
 
-        features = np.array([[mid, final, proj, att]])
-        input_dict = {'midterm': mid, 'final': final, 'project': proj, 'attendance': att}
+    context = {
+        'query': query or '',
+        'student_data': student_data,
+        'prediction': prediction,
+        'semesters': json.dumps(semesters),
+        'scores': json.dumps(scores),
+        'average_total_score': average_total_score,
+        'average_total_attendance': average_total_attendance,
+        'top_scholarship': top_scholarship,
+        'top_internship': top_internship,
+        'student_names': student_names,
+    }
 
-        # Predictions
-        bea = beasiswa_model.predict(features)[0]
-        bea_proba = beasiswa_model.predict_proba(features)[0]
-
-        non = non_akademik_model.predict(features)[0]
-        non_proba = non_akademik_model.predict_proba(features)[0]
-
-        kons_encoded = konsistensi_model.predict(features)[0]
-        kons_proba_dict = decode_konsistensi_proba(konsistensi_model.predict_proba(features)[0])
-
-        magang = magang_model.predict(features)[0]
-        magang_proba = magang_model.predict_proba(features)[0]
-
-        # Labels
-        bea_label = 'Eligible' if bea == 1 else 'Not Eligible'
-        non_label = 'Yes' if non == 1 else 'No'
-        kons_label = decode_konsistensi_label(kons_encoded)
-        kons_label_eng = konsistensi_translation.get(kons_label, kons_label)
-        magang_label = 'Ready' if magang == 1 else 'Not Yet'
-
-        # Save to DB
-        for model_name, label in [('beasiswa', bea_label), ('non_akademik', non_label), ('konsistensi', kons_label), ('magang', magang_label)]:
-            PredictionLog.objects.create(
-                user_name=user_name,
-                model_used=model_name,
-                input_data=json.dumps(input_dict),
-                prediction_result=label
-            )
-
-        chart_probs = {
-            'beasiswa': float(bea_proba[1]),
-            'non_akademik': float(non_proba[1]),
-            'konsistensi': float(kons_proba_dict.get(kons_label, 0)),
-            'magang': float(magang_proba[1])
-        }
-
-        context = {
-            'name': user_name,
-            'midterm': mid,
-            'final': final,
-            'project': proj,
-            'attendance': att,
-            'beasiswa': bea_label,
-            'non_akademik': non_label,
-            'konsistensi': kons_label_eng,
-            'magang': magang_label,
-            'probabilities_json': json.dumps(chart_probs),
-
-            # Insights
-            'insight_beasiswa': get_insight_beasiswa(mid, final, proj, att, bea),
-            'insight_non_akademik': get_insight_non_akademik(proj, att, mid, non),
-            'insight_konsistensi': get_insight_konsistensi(mid, final),
-            'insight_magang': get_insight_magang(proj, att, final, magang),
-        }
-
-        return render(request, 'altara/result.html', context)
+    return render(request, 'altara/predict.html', context)

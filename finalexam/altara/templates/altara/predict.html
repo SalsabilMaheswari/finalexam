@@ -1,150 +1,199 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Altara Prediction Form</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Lexend:wght@400;700&display=swap');
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Lexend', sans-serif;
-      background-color: #050e18;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .form-container {
-      background-color: rgba(77, 165, 166, 0.05);
-      backdrop-filter: blur(10px);
-      padding: 50px 40px;
-      border-radius: 20px;
-      box-shadow: 0 0 30px rgba(172, 187, 190, 0.08);
-      max-width: 600px;
-      width: 100%;
-      position: relative;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 40px;
-      color: #308091;
-      font-size: 28px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 20px;
-      color: #d8e6f1;
-      font-size: 16px;
-    }
-
-    input[type="text"],
-    input[type="number"] {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
-      background-color: #e6f4f9;
-      color: #031f3f;
-      transition: 0.2s ease-in-out;
-    }
-
-    input[type="text"]:focus,
-    input[type="number"]:focus {
-      outline: none;
-      box-shadow: 0 0 5px #00d4ff;
-    }
-
-    .form-actions {
-      margin-top: 30px;
-    }
-
-    button[type="submit"] {
-      width: 100%;
-      background: linear-gradient(135deg, #062930, #6ec1e4);
-      border: none;
-      padding: 14px 24px;
-      font-size: 16px;
-      color: #031f3f;
-      font-weight: bold;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 6px 10px rgba(0, 212, 255, 0.3);
-      transition: all 0.3s ease;
-    }
-
-    button[type="submit"]:hover {
-      transform: scale(1.05);
-    }
-
-    .back-link-container {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 15px;
-    }
-
-    .back-link a {
-      background: linear-gradient(135deg, #6ec1e4,#062930);
-      padding: 12px 20px;
-      font-size: 14px;
-      font-weight: bold;
-      border-radius: 8px;
-      color: #09262a;
-      text-decoration: none;
-      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
-      transition: all 0.3s ease;
-    }
-
-    .back-link a:hover {
-      transform: scale(1.05);
-    }
-  </style>
+  <title>ALTARA Prediction Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <link
+      rel="stylesheet"
+      href="{% static 'finalexampredict/css/member2.css' %}"
+    />
 </head>
 <body>
 
-  <div class="form-container">
-    <h2>Student Prediction Form</h2>
-    <form method="POST" action="{% url 'altara_result' %}">
-      {% csrf_token %}
-      <label>Name:
-        <input type="text" name="name" required>
-      </label>
-      <label>Midterm Score:
-        <input type="number" name="midterm" step="0.1" required>
-      </label>
-      <label>Final Score:
-        <input type="number" name="final" step="0.1" required>
-      </label>
-      <label>Project Score:
-        <input type="number" name="project" step="0.1" required>
-      </label>
-      <label>Attendance (%):
-        <input type="number" name="attendance" step="0.1" required>
-      </label>
 
-      <div class="form-actions">
-        <button type="submit"> Submit Prediction</button>
-        <div class="back-link-container">
-          <div class="back-link">
-            <a href="{% url 'member2' %}"> Back to Altara Home Page</a>
+  {% include "finalexampredict/navbar.html" %}
+
+
+  <div class="predict-container">
+    <a href="{% url 'member2' %}" class="btn btn-back">← Back</a>
+    <h1>🎯 ALTARA Prediction Dashboard</h1>
+    <div class="content-left">
+      <!-- Search Form -->
+      <form method="get" class="mb-4">
+        <div class="input-group">
+          <input name="q" list="studentList" placeholder="Enter or select student name..."
+                 value="{{ query|default:'' }}" required />
+          <datalist id="studentList">
+            {% for name in student_names %}
+              <option value="{{ name }}" />
+            {% endfor %}
+          </datalist>
+          <button type="submit">Search</button>
+        </div>
+      </form>
+
+
+      {% if student_data %}
+        <h3>{{ student_data.0.name }} (ID: {{ student_data.0.student_id }})</h3>
+
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Semester</th>
+              <th>Attendance (%)</th>
+              <th>Midterm</th>
+              <th>Final</th>
+              <th>Project</th>
+              <th>Avg Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in student_data %}
+              <tr>
+                <td>{{ row.course_name }}</td>
+                <td>{{ row.semester_name }}</td>
+                <td>{{ row.attendance_percentage }}</td>
+                <td>{{ row.midterm }}</td>
+                <td>{{ row.final }}</td>
+                <td>{{ row.project }}</td>
+                <td>{{ row.average_score }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+        <!-- Score Cards -->
+        <div class="card-container">
+          <div class="card">
+            <div class="card-header">📚 Total Average Score</div>
+            <div class="card-body">
+              <h5 class="display-6">{{ average_total_score }}</h5>
+              <p>This is the overall average across all semesters.</p>
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-header">🕒 Total Average Attendance</div>
+            <div class="card-body">
+              <h5 class="display-6">{{ average_total_attendance }}%</h5>
+              <p>Average attendance across all courses and semesters.</p>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
-  </div>
 
+
+        <h4>📌 Prediction & Insights</h4>
+
+
+        <div class="card">
+          <div class="card-header">🎓 Scholarship Eligibility</div>
+          <div class="card-body">
+            <strong class="text-primary">{{ prediction.scholarship }}</strong>
+            <p>
+              {% if prediction.scholarship == 'Eligible' %}
+                The student meets the scholarship criteria (score ≥ 75, attendance ≥ 70%).
+              {% else %}
+                The student does not meet the criteria. Encourage improvement.
+              {% endif %}
+            </p>
+          </div>
+        </div>
+
+
+        <div class="card">
+          <div class="card-header">💼 Internship Readiness</div>
+          <div class="card-body">
+            <strong class="text-success">{{ prediction.internship }}</strong>
+            <p>
+              {% if prediction.internship == 'Ready' %}
+                Student is academically ready for internships (score ≥ 70).
+              {% else %}
+                Improvement needed before applying for internships.
+              {% endif %}
+            </p>
+          </div>
+        </div>
+
+
+        <div class="card">
+          <div class="card-header">📈 Grade Trend</div>
+          <div class="card-body">
+            <strong class="text-warning">{{ prediction.trend }}</strong>
+            <p>
+              {% if prediction.trend == 'Stable' %}
+                Performance is consistent across semesters.
+              {% else %}
+                Scores vary—additional support may be helpful.
+              {% endif %}
+            </p>
+          </div>
+        </div>
+
+
+        <h5 class="mt-4">📊 Grade Trend Chart</h5>
+        <div class="chart-container">
+          <canvas id="gradeChart"></canvas>
+        </div>
+        <script>
+          const ctx = document.getElementById('gradeChart').getContext('2d');
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: JSON.parse('{{ semesters|escapejs }}'),
+              datasets: [{
+                label: 'Avg Score per Semester',
+                data: JSON.parse('{{ scores|escapejs }}'),
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100
+                }
+              }
+            }
+          });
+        </script>
+       
+
+
+        <h4 class="mt-5">🏆 Students Rank</h4>
+
+
+        <div class="ranking-table">
+          <h5>🎓 Scholarship Eligible</h5>
+          <ol>
+            {% for s in top_scholarship %}
+              <li>{{ s.name }} - {{ s.score }}</li>
+            {% endfor %}
+          </ol>
+        </div>
+
+
+        <div class="ranking-table">
+          <h5>💼 Internship Ready</h5>
+          <ol>
+            {% for i in top_internship %}
+              <li>{{ i.name }} - {{ i.score }}</li>
+            {% endfor %}
+          </ol>
+        </div>
+      {% endif %}
+    </div>
+  </div>
 </body>
 </html>
+
+

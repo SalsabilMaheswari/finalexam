@@ -1,43 +1,89 @@
-import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import LabelEncoder
+# altara/ml_models.py
 
-# Load dataset
-df = pd.read_csv('altara/altara_dataset.csv')
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import StandardScaler
 
-# Fitur input
-X = df[['midterm', 'final', 'project', 'attendance']]
 
-# Encode label konsistensi
-le_konsistensi = LabelEncoder()
-df['konsistensi_encoded'] = le_konsistensi.fit_transform(df['konsistensi'])
+def predict_student_performance(df):
+    if df.shape[0] < 2:
+        return {
+            'scholarship': [{'model': '-', 'accuracy': 0, 'probability': 0, 'label': 'Insufficient Data'}],
+            'internship': {'model': '-', 'accuracy': 0, 'probability': 0, 'label': 'Insufficient Data'},
+            'trend': 'Unknown'
+        }
 
-def train_beasiswa_model():
-    y = df['eligible_beasiswa']
-    model = RandomForestClassifier()
-    model.fit(X, y)
-    return model
+    # Fitur dan label
+    X = df[['average_score', 'attendance_percentage']]
+    y_scholarship = (df['average_score'] >= 75) & (df['attendance_percentage'] >= 70)
+    y_internship = df['average_score'] >= 70
 
-def train_non_akademik_model():
-    y = df['non_akademik']
-    model = RandomForestClassifier()
-    model.fit(X, y)
-    return model
+    # Normalisasi fitur
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
 
-def train_konsistensi_model():
-    y = df['konsistensi_encoded']
-    model = RandomForestClassifier()
-    model.fit(X, y)
-    return model
+    # Splitting hanya sekali
+    X_train, X_test, y_s_train, y_s_test, y_i_train, y_i_test = train_test_split(
+        X_scaled, y_scholarship, y_internship, test_size=0.2, random_state=42
+    )
 
-def train_magang_model():
-    y = df['magang_awal']
-    model = RandomForestClassifier()
-    model.fit(X, y)
-    return model
+    models = {
+        'Logistic Regression': LogisticRegression(),
+        'Random Forest': RandomForestClassifier(),
+        'Gradient Boosting': GradientBoostingClassifier()
+    }
 
-def decode_konsistensi_label(encoded_label):
-    return le_konsistensi.inverse_transform([encoded_label])[0]
+    predictions = {
+        'scholarship': [],
+        'internship': {},
+        'trend': None
+    }
 
-def decode_konsistensi_proba(prob_array):
-    return dict(zip(le_konsistensi.inverse_transform([0,1,2]), prob_array))
+    # Prediksi beasiswa
+    for name, model in models.items():
+        model.fit(X_train, y_s_train)
+        y_pred = model.predict(X_test)
+        accuracy = accuracy_score(y_s_test, y_pred)
+
+        try:
+            probs = model.predict_proba([X_scaled[-1]])[0]
+        except AttributeError:
+            probs = [1 - model.predict([X_scaled[-1]])[0], model.predict([X_scaled[-1]])[0]]
+
+        label = model.predict([X_scaled[-1]])[0]
+
+        predictions['scholarship'].append({
+            'model': name,
+            'accuracy': round(accuracy * 100, 2),
+            'probability': round(probs[1] * 100, 2),
+            'label': 'Eligible' if label else 'Not Eligible'
+        })
+
+    # Prediksi magang menggunakan Random Forest
+    intern_model = RandomForestClassifier()
+    intern_model.fit(X_train, y_i_train)
+    y_pred_intern = intern_model.predict(X_test)
+    accuracy_intern = accuracy_score(y_i_test, y_pred_intern)
+
+    try:
+        probs_intern = intern_model.predict_proba([X_scaled[-1]])[0]
+    except AttributeError:
+        probs_intern = [1 - intern_model.predict([X_scaled[-1]])[0], intern_model.predict([X_scaled[-1]])[0]]
+
+    label_intern = intern_model.predict([X_scaled[-1]])[0]
+
+    predictions['internship'] = {
+        'model': 'Random Forest',
+        'accuracy': round(accuracy_intern * 100, 2),
+        'probability': round(probs_intern[1] * 100, 2),
+        'label': 'Ready' if label_intern else 'Not Ready'
+    }
+
+    # Analisis tren skor
+    std_dev = df['average_score'].std(ddof=0)
+    predictions['trend'] = 'Stable' if std_dev < 10 else 'Declining'
+
+    return predictions
